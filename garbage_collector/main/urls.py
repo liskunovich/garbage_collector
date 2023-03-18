@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import CollectorRegistration, CollectorsView
+from .views import CollectorsView
 
 urlpatterns = [
-    path('registration/', CollectorRegistration.as_view(), name='collector-create'),
     path('collectors/', CollectorsView.as_view(), name='collectors'),
+    path('collectors/<int:pk>', CollectorsView.as_view(), name='collectors'),
 ]

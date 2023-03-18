@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.views import APIView
@@ -8,9 +9,7 @@ from django.contrib.auth import get_user_model
 
 
 # Create your views here.
-
-class CollectorRegistration(generics.ListCreateAPIView):
-
+class CollectorsView(APIView):
     def post(self, request, format='json', **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -27,14 +26,23 @@ class CollectorRegistration(generics.ListCreateAPIView):
         collector = Collector(user=user)
         collector.save()
 
+    def get_object(self, pk):
+        return Collector.objects.get(id=pk)
 
-class CollectorsView(APIView):
-    def get(self, request):
-        collector_id = request.GET.get('id', None)
+    def get(self, request, **kwargs):
+        collector_id = kwargs.get('pk', None)
         if collector_id:
-            query_set = Collector.objects.get(id=collector_id)
+            query_set = self.get_object(collector_id)
             serializer = CollectorSerializer(query_set)
         else:
             query_set = Collector.objects.all()
             serializer = CollectorSerializer(query_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, pk):
+        collector = self.get_object(pk)
+        serializer = CollectorSerializer(collector, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(status=status.HTTP_200_OK, data=serializer.data)
+        return JsonResponse(status=status.HTTP_400_BAD_REQUEST, data="Wrong parameters")
