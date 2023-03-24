@@ -15,3 +15,11 @@ class Collector(models.Model):
 
     class Meta:
         db_table = 'Collector'
+
+
+class Post(models.Model):
+    source = models.CharField(max_length=128)
+    created = models.DateTimeField()
+    title = models.CharField(max_length=256)
+    text = models.TextField()
+    url = models.URLField()
