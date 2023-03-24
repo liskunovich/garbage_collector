@@ -23,9 +23,9 @@ class Baigenews(WebSite):
                     'id': link[20:],
                     'source': self.source,
                     'created': soup.find('meta', property='article:published_time')['content'],
+                    'title': soup.find('h1', class_='main__new__caption').text.strip(),
                     'text': ([p.text.strip() for p in container.find_all('p')]),
                     'url': link,
-                    'comments': ['']
                 }
             )
         return data
@@ -40,13 +40,12 @@ class Baigenews(WebSite):
                                                        href=True)]
         return await self.get_posts_content(links)
 
+
 def scrap_baigenews() -> List[dict]:
     instance = Baigenews(
-      base_url='https://baigenews.kz',
-      news_url='https://baigenews.kz/teg/ekologiya/'
+        base_url='https://baigenews.kz',
+        news_url='https://baigenews.kz/teg/ekologiya/'
     )
     loop = asyncio.get_event_loop()
     data = loop.run_until_complete(instance.get_posts())
     return data
-
-print(scrap_baigenews())
