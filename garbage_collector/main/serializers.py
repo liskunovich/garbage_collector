@@ -3,7 +3,7 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Collector
+from .models import Collector, Post, GarbageDelivery
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -36,7 +36,6 @@ class UserSerializer(serializers.ModelSerializer):
         }
         return data
 
-
     def update(self, instance, validated_data):
         """Update a user setting the password correctly"""
         password = validated_data.pop('password', None)
@@ -49,12 +48,35 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CollectorSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Collector
         fields = ('user', 'glass', 'plastic', 'carton')
 
     user = serializers.CharField()
+    glass = serializers.IntegerField()
+    plastic = serializers.IntegerField()
+    carton = serializers.IntegerField()
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('source', 'created', 'title', 'text', 'url')
+
+    source = serializers.CharField()
+    created = serializers.DateTimeField()
+    title = serializers.CharField()
+    text = serializers.CharField()
+    url = serializers.URLField()
+
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GarbageDelivery
+        fields = ('collector', 'date', 'glass', 'plastic', 'carton')
+
+    collector = serializers.CharField()
+    date = serializers.DateField()
     glass = serializers.IntegerField()
     plastic = serializers.IntegerField()
     carton = serializers.IntegerField()

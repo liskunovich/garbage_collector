@@ -1,11 +1,12 @@
+from django.db.models import Sum
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.views import APIView
-from django.core import serializers
-from .serializers import UserSerializer, CollectorSerializer
-from .models import Collector
+from .serializers import UserSerializer, CollectorSerializer, PostSerializer, RatingSerializer
+from .models import Collector, Post, GarbageDelivery
 from django.contrib.auth import get_user_model
+from datetime import datetime
 
 
 # Create your views here.
@@ -23,7 +24,7 @@ class CollectorsView(APIView):
     def create_collector(self, username):
         user_model = get_user_model()
         user = user_model.objects.get(username=username)
-        collector = Collector(user=user)
+        collector = Collector(user=user, username=str(user))
         collector.save()
 
     def get_object(self, pk):
@@ -46,3 +47,36 @@ class CollectorsView(APIView):
             serializer.save()
             return JsonResponse(status=status.HTTP_200_OK, data=serializer.data)
         return JsonResponse(status=status.HTTP_400_BAD_REQUEST, data="Wrong parameters")
+
+
+class PostsView(generics.ListAPIView):
+    queryset = Post.objects.all().order_by('-created')
+    serializer_class = PostSerializer
+
+
+class RatingView(generics.ListAPIView):
+    serializer_class = RatingSerializer
+
+    def get(self, request, **kwargs):
+        current_date = datetime.now()
+        garbage_type = request.GET.get('garbage_type', None)
+
+        if garbage_type:
+            queryset = Collector.objects.filter(garbagedelivery__date__month=current_date.month).values(
+                'username'
+            ).annotate(total=Sum(f'garbagedelivery__{garbage_type}')).order_by('-total')[:10]
+        else:
+            queryset = self.get_queryset()
+        return Response(queryset, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        current_date = datetime.now()
+        queryset = []
+        garbage_types = ('glass', 'plastic', 'carton')
+        for garbage_t in garbage_types:
+            queryset.append({
+                garbage_t: Collector.objects.filter(garbagedelivery__date__month=current_date.month).values(
+                    'username'
+                ).annotate(total=Sum(f'garbagedelivery__{garbage_t}')).order_by('-total')[:10]
+            })
+        return queryset
