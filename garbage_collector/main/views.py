@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from django.http import JsonResponse
 from rest_framework.response import Response
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 from rest_framework.views import APIView
 from .serializers import UserSerializer, CollectorSerializer, PostSerializer, RatingSerializer
 from .models import Collector, Post, GarbageDelivery
@@ -80,3 +80,15 @@ class RatingView(generics.ListAPIView):
                 ).annotate(total=Sum(f'garbagedelivery__{garbage_t}')).order_by('-total')[:10]
             })
         return queryset
+
+
+class TokenCurrentUser(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, format=None):
+        if request.user:
+            data = {
+                "id": request.user.id,
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
