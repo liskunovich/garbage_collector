@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from rest_framework.views import APIView
 from .serializers import UserSerializer, CollectorSerializer, PostSerializer, RatingSerializer
-from .models import Collector, Post, GarbageDelivery
+from .models import Collector, Post
+from utils.db.db_seeder import write_in_garbage_delivery
+from utils.db.db_reader import get_total_garbage_rating, get_certain_garbage_rating
 from django.contrib.auth import get_user_model
-from datetime import datetime
 
 
 # Create your views here.
@@ -58,28 +59,33 @@ class RatingView(generics.ListAPIView):
     serializer_class = RatingSerializer
 
     def get(self, request, **kwargs):
-        current_date = datetime.now()
         garbage_type = request.GET.get('garbage_type', None)
-
         if garbage_type:
-            queryset = Collector.objects.filter(garbagedelivery__date__month=current_date.month).values(
-                'username'
-            ).annotate(total=Sum(f'garbagedelivery__{garbage_type}')).order_by('-total')[:10]
+            queryset = get_certain_garbage_rating(garbage_type)
         else:
             queryset = self.get_queryset()
         return Response(queryset, status=status.HTTP_200_OK)
 
     def get_queryset(self):
-        current_date = datetime.now()
-        queryset = []
-        garbage_types = ('glass', 'plastic', 'carton')
-        for garbage_t in garbage_types:
-            queryset.append({
-                garbage_t: Collector.objects.filter(garbagedelivery__date__month=current_date.month).values(
-                    'username'
-                ).annotate(total=Sum(f'garbagedelivery__{garbage_t}')).order_by('-total')[:10]
-            })
+        queryset = get_total_garbage_rating()
         return queryset
+
+
+class GarbageDeliveryView(generics.ListAPIView):
+    def post(self, request, **kwargs):
+        collector = self.get_object(request.data['collector'])
+        print(collector)
+        serializer = RatingSerializer(data=request.data)
+        if serializer.is_valid() and collector:
+            write_in_garbage_delivery(collector, serializer)
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self, username):
+        collector = Collector.objects.filter(username=username)
+        if collector.exists():
+            return collector.first()
+        return None
 
 
 class TokenCurrentUser(APIView):
