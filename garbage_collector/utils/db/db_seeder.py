@@ -1,4 +1,15 @@
-from main.models import GarbageDelivery, Collector
+from main.models import GarbageDelivery, Collector, Post
+
+
+def write_in_post(data):
+    for d in data:
+        post, created = Post.objects.get_or_create(
+            source=d.get('source'),
+            created=d.get('created'),
+            title=d.get('title'),
+            text=d.get('text'),
+            url=d.get('url')
+        )
 
 
 def write_in_garbage_delivery(collector, data):
@@ -18,4 +29,3 @@ def patch_collector(collector, data):
     collector.plastic += data['plastic'].value
     collector.carton += data['carton'].value
     collector.save()
-
