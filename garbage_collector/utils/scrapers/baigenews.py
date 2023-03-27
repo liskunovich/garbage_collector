@@ -3,7 +3,7 @@ from typing import List
 import asyncio
 from bs4 import BeautifulSoup
 
-from scrapers_base import WebSite
+from .scrapers_base import WebSite
 
 
 class Baigenews(WebSite):
@@ -46,6 +46,7 @@ def scrap_baigenews() -> List[dict]:
         base_url='https://baigenews.kz',
         news_url='https://baigenews.kz/teg/ekologiya/'
     )
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     data = loop.run_until_complete(instance.get_posts())
     return data
