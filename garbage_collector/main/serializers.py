@@ -52,7 +52,7 @@ class CollectorSerializer(serializers.ModelSerializer):
         model = Collector
         fields = ('user', 'glass', 'plastic', 'carton')
 
-    user = serializers.CharField()
+    user = UserSerializer()
     glass = serializers.IntegerField()
     plastic = serializers.IntegerField()
     carton = serializers.IntegerField()

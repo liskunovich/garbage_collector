@@ -74,7 +74,6 @@ class RatingView(generics.ListAPIView):
 class GarbageDeliveryView(generics.ListAPIView):
     def post(self, request, **kwargs):
         collector = self.get_object(request.data['collector'])
-        print(collector)
         serializer = RatingSerializer(data=request.data)
         if serializer.is_valid() and collector:
             write_in_garbage_delivery(collector, serializer)
@@ -91,10 +90,9 @@ class GarbageDeliveryView(generics.ListAPIView):
 class TokenCurrentUser(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         if request.user:
-            data = {
-                "id": request.user.id,
-            }
-            return Response(data, status=status.HTTP_200_OK)
+            collector = Collector.objects.get(user=request.user)
+            serializer = CollectorSerializer(collector)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_401_UNAUTHORIZED)

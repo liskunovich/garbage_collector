@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 
 class Collector(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='+')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='collector')
     username = models.CharField(max_length=128)
     glass = models.FloatField(default=0)
     plastic = models.FloatField(default=0)
