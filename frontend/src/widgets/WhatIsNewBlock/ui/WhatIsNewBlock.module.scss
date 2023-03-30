@@ -1,0 +1,16 @@
+.WhatIsNewBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.cards {
+  display: flex;
+  overflow-x: auto;
+  gap: 30px;
+}
+
+.bottom {
+  display: flex;
+  justify-content: center;
+}

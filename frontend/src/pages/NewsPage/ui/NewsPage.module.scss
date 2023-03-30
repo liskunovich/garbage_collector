@@ -1,0 +1,29 @@
+
+.NewsPage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 70px;
+}
+
+.content {
+  padding: 180px 15px 35px;
+}
+
+.title {
+  color: var(--active-color);
+  font: var(--font-l);
+  margin-bottom: 30px;
+}
+
+.newsList {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}

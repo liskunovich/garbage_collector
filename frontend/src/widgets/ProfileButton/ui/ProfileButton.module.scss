@@ -1,0 +1,45 @@
+
+.ProfileButton {
+  position: relative;
+  min-width: 60px;
+  cursor: pointer;
+  height: 40px;
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  transition: background-color 0.2s linear;
+
+  path {
+    transition: stroke 0.2s linear;
+  }
+}
+
+.ProfileButton.open {
+  overflow: unset;
+  background: var(--secondary-bg-color);
+
+  path {
+    stroke: white;
+  }
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--secondary-bg-color);
+  list-style: none;
+  border-radius: 0 0 5px 5px;
+  overflow: hidden;
+}
+
+.menuItem {
+  padding: 9px 5px 6px;
+  width: 100%;
+  text-align: right;
+  height: 40px;
+  color: white;
+  white-space: nowrap;
+}

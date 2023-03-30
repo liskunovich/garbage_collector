@@ -1,0 +1,13 @@
+:root {
+    --font-family: "Amatic SC", "Times New Roman", sans-serif;
+    --font-size-s: 20px;
+    --font-line-s: 26px;
+    --font-s: 400 var(--font-size-s) / var(--font-line-s) var(--font-family);
+    --font-size-m: 24px;
+    --font-line-m: 30px;
+    --font-m: 400 var(--font-size-m) / var(--font-line-m) var(--font-family);
+    --font-size-l: 48px;
+    --font-line-l: 60px;
+    --font-l: 400 var(--font-size-l) / var(--font-line-l) var(--font-family);
+    --navbar-height: 106px;
+}

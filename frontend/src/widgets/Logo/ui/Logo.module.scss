@@ -1,0 +1,17 @@
+.Logo {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.light {
+  color: var(--active-color);
+
+  path {
+    fill: var(--active-color);
+  }
+}
+
+.dark {
+  color: #fff;
+}

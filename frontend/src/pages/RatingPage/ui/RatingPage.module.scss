@@ -1,0 +1,63 @@
+
+.RatingPage {
+  padding-top: 180px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 30px;
+  gap: 35px;
+}
+
+.tabs {
+  display: flex;
+  gap: 80px;
+}
+
+.ratingList {
+  border-radius: 5px;
+  max-width: 520px;
+  width: 100%;
+  list-style: none;
+  background: white;
+}
+
+.ratingItem {
+  width: 100%;
+  padding: 20px 26px;
+  display: flex;
+}
+
+.ratingPlace {
+  position: relative;
+  margin-right: 92px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    position: relative;
+    z-index: 10;
+  }
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-54%, -40%);
+  }
+}
+
+.ratingAvatar {
+  margin-right: 56px;
+}
+
+.ratingName {
+  flex-grow: 1;
+}
+
+.active {
+  text-decoration: underline;
+}

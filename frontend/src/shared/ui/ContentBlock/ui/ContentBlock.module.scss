@@ -1,0 +1,25 @@
+
+.ContentBlock {
+  overflow: hidden;
+}
+
+.default {
+  background: #fff;
+}
+
+.secondary {
+  background: var(--primary-bg-color);
+}
+
+.rounded {
+  border-radius: 15px;
+}
+
+.bottom-rounded {
+  border-radius: 0 0 15px 15px;
+}
+
+.top-rounded {
+  border-radius: 15px 15px 0 0;
+
+}

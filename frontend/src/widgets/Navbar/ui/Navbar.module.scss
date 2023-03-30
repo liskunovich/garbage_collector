@@ -1,0 +1,31 @@
+.Navbar {
+    padding: 60px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--navbar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.links {
+    display: flex;
+    gap: 30px;
+}
+
+.mainLink {
+    margin-right: 15px;
+}
+
+.logo {
+    color: var(--secondary-color)
+}
+
+.navbarRight {
+    display: flex;
+    align-items: center;
+    gap: 120px;
+    margin-right: 60px;
+}

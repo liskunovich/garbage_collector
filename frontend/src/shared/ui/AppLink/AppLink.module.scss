@@ -1,0 +1,31 @@
+.AppLink {
+    color: var(--primary-color);
+}
+
+.AppLink:hover {
+    color: var(--active-color);
+}
+
+.active {
+    text-decoration: underline;
+}
+
+.primary {
+    color: var(--primary-color);
+}
+
+.secondary {
+    color: var(--secondary-color);
+}
+
+.red {
+    color: red;
+}
+
+.default {
+    text-decoration: none;
+}
+
+.underline {
+    text-decoration: underline;
+}

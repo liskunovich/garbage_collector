@@ -1,0 +1,29 @@
+@import "reset";
+@import "./variables/global";
+@import "./themes/default";
+@import "./themes/dark";
+
+html {
+    scroll-behavior: smooth;
+}
+
+.app {
+    font: var(--font-m);
+    color: var(--primary-color);
+    min-height: 100vh;
+}
+
+.content-page {
+    width: 100%;
+}
+
+.page-wrapper {
+    padding: 0 40px;
+    position: relative;
+    max-width: 1290px;
+    margin: 0 auto;
+}
+
+h2 {
+    font: var(--font-l);
+}
